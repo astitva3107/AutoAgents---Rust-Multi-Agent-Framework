@@ -1,0 +1,50 @@
+[package]
+name = "liquid-edge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Minimal edge inference runtime for LLMs"
+repository.workspace = true
+keywords = ["inference", "llm", "edge", "runtime"]
+categories = ["science", "algorithms"]
+readme = "README.md"
+
+[features]
+default = ["onnx"]
+onnx = ["dep:ort", "dep:ndarray"]
+cuda = ["onnx", "ort/cuda"]
+
+[dependencies]
+# Core dependencies
+thiserror = { workspace = true }
+log = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Utilities
+chrono = { workspace = true }
+
+# Non-WASM dependencies
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { workspace = true, features = ["rt", "sync", "fs"] }
+num_cpus = "1.16"
+rand = { workspace = true }
+# ONNX Runtime support for native
+ort = { version = "=2.0.0-rc.10", optional = true, features = [
+    "copy-dylibs",
+    "half",
+    "std",
+] }
+ndarray = { workspace = true, optional = true }
+
+# WASM dependencies
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen-futures = { version = "0.4", optional = true }
+getrandom = { workspace = true, optional = true, features = ["wasm_js"] }
+ndarray = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }

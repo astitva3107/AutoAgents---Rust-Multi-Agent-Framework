@@ -1,0 +1,19 @@
+[package]
+name = "basic-example"
+version = "0.2.0-alpha.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+autoagents-derive.workspace = true
+autoagents = { workspace = true, default-features = false, features = ["openai", "liquid_edge","logging"] }
+liquid-edge = { workspace = true, features = ["cuda"] }
+tokio = { workspace = true }
+futures = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+async-trait = { workspace = true }
+tokio-stream.workspace = true
+colored = "3.0.0"
+uuid = { version = "1.17.0", features = ["v4"] }
